@@ -33,6 +33,6 @@ dependencies = []
 [project.scripts]
 
 [project.urls]
-"Source" = "https://github.com/dougthor42/subscriptable-path"
+"Source Code" = "https://github.com/dougthor42/subscriptable-path"
 "Changelog" = "https://github.com/dougthor42/subscriptable-path/blob/master/CHANGELOG.md"
-"Bug Tracker" = "https://github.com/dougtho42/subscriptable-path/issues"
+"Bug Tracker" = "https://github.com/dougthor42/subscriptable-path/issues"
