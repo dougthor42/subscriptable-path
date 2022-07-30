@@ -127,7 +127,13 @@ False
 
 ### Deployment
 
-TODO
+> TODO: Move to fully automated deployment with GitHub Actions.
+
+1.  Update the version in `pyproject.toml`
+2.  Create a new git tag: `git tag v<version>`.
+3.  `python -m build`
+4.  pip install twine
+5.  twine upload dist/*
 
 
 ## Changelog
