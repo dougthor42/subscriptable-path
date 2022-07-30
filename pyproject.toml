@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools"]
+requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "subscriptable_path"
-version = "0.0.0"
+version = "0.1.0"
 description = "A subclass of Python's pathlib objects that allow subscripting/indexing."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -24,9 +24,6 @@ classifiers = [
     "Operating System :: Microsoft",
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Topic :: System :: Operating System",
 ]
 dependencies = []
@@ -36,5 +33,6 @@ dependencies = []
 [project.scripts]
 
 [project.urls]
-Source = "https://github.com/dougthor42/subscriptable-path"
-Changelog = "https://github.com/dougthor42/subscriptable-path/blob/master/CHANGELOG.md"
+"Source" = "https://github.com/dougthor42/subscriptable-path"
+"Changelog" = "https://github.com/dougthor42/subscriptable-path/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/dougtho42/subscriptable-path/issues"
