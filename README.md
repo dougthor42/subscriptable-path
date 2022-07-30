@@ -5,7 +5,7 @@ A subclass of Python's pathlib objects that allow subscripting/indexing.
 I was recently working with some `pathlib.Path` stuff and found that I
 wanted to get the `n`th folder in a deep path. Naively, I tried:
 
-```python
+```pycon
 >>> from pathlib import Path
 >>> a = Path("/foo/bar/baz/a/b/c/d.txt")
 >>> a[4]
@@ -16,27 +16,98 @@ TypeError: 'PosixPath' object is not subscriptable
 
 Harrumph.
 
-This project aims to make such a thing possible:
+This project aims to make such a thing possible. See [Usage](#usage) for details.
 
-```python
->>> from subscriptable_path import SubscriptablePath as SPath
->>> a = SPath("/foo/bar/baz/a/b/c/d.txt")
->>> a[4]
-"a"
->>> a[-2]
-"c"
->>> a[2:4]  # Slices
-"bar/baz"
->>> del a[2]
->>> a
-SubscriptablePath("/foo/baz/a/b/c/d.txt")  # note "baz" is missing
+
+## Installation
+
+This is a pure python package with no dependencies. Installing is easy:
+
+```
+pip install subscriptable_path
 ```
 
-Basically: almost anything you can do on a list, you can do on a `SubscriptablePath`.
-At least that's the goal...
 
+## Usage
 
-## Installation and Usage
+> **Note:** Initial versions modify `pathlib.PurePath` directly, as those classes
+> are a bit of a pain to subclass (because of tricks with `__new__`). This means
+> that importing this module will affect every usage of `pathlib.PurePath`.
+> Future work will adjust this API so that you can use `pathlib.PurePath` and
+> `SubscriptablePath` simultaneously.
+>
+> The goal is to create a SubscriptablePath object that can be imported and
+> replace the `pathlib.Path` object or can be used alongside. Eg:
+>
+> ```python
+> from subscribtable_path import SubscriptablePath as Path  # drop-in replacement
+> from subscriptable_path import SubscriptablePath as SPath  # use alongside
+> ```
+
+It's easiest to show usage with examples:
+
+```pycon
+>>> from subscriptable_path import Path
+
+# Instantiate a Path object, just like `pathlib.Path`:
+>>> path = Path("/mnt/foo/bar/1/2/3")
+
+# Get a component of the path:
+>>> path[2]
+"foo"
+>>> path[0]
+"/"
+>>> path[-1]
+"3"
+
+# Slices are also supported for __getitem__
+>>> path[1:3]
+"mnt/foo"
+
+# Check the path length:
+>>> len(path)
+7
+
+# Adjust a particular component, modifying the object
+>>> path[2] = "hello"
+>>> path
+Path("/mnt/hello/bar/1/2/3")
+
+# Delete a part of the path, modifying the object
+>>> del path[2]
+>>> path
+Path("/mnt/bar/1/2/3")
+
+# loop through the items in the path
+>>> for name in path:
+...     print(name)
+...
+"/"
+"mnt"
+"bar"
+"1"
+"2"
+"3"
+
+# Reverse the path:
+# Note that if the path is absolute, the root is kept.
+>>> reversed(path)
+>>> path
+Path("/3/2/1/bar/mnt")
+
+>>> rel_path = Path("1/2/3")
+>>> reversed(rel_path)
+>>> rel_path
+Path("3/2/1")
+
+# And check if an item is in the path:
+>>> "foo" in path
+False
+>>> "bar" in path
+True
+>>> "ba" in path
+False
+```
 
 
 ## Development
@@ -47,10 +118,16 @@ At least that's the goal...
 4.  Activate it: `. .venv/bin/activate`
 5.  Install python packages:
     1.  `pip install -U pip setuptools wheel`
-    2.  `pip install -r requirements.txt -r requirements-dev.txt`
+    2.  `pip install -r requirements-dev.txt`
     3.  `pip install -e .`
 6.  Run tests to verify: `pytest`
+7.  Install pre-commit hooks: `pre-commit install`
 7.  Ready to develop
+
+
+### Deployment
+
+TODO
 
 
 ## Changelog
